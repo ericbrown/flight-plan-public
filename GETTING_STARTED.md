@@ -167,6 +167,8 @@ This is the core loop, and the whole point of Flight Plan. We'll build a small e
 
 ### 4.1 Start the session
 
+**`/session-start` is always the first thing you do in a Flight Plan project — before describing a task, before touching a file, before anything else.** It's what loads the Memory Bank so the agent knows where the project stands instead of working blind. Make it a reflex: open Claude Code, run `/session-start`, *then* start working. (It has a companion at the other end — `/session-end`, covered in [section 8](#8-ending-a-session) — that you run as the *last* thing before you stop. The two bookend every session.)
+
 Inside Claude Code:
 
 ```
@@ -492,6 +494,8 @@ If no key is set, the helper exits cleanly (`2`) and the skill does a single-mod
 ---
 
 ## 8. Ending a session
+
+**`/session-end` is always the last thing you do before you stop — the closing bookend to the `/session-start` you opened with.** Running it is what carries this session's context, decisions, and lessons forward; if you close Claude Code without it, that work is lost and your next `/session-start` comes up cold. Run it even after a short session — a five-minute fix still produced state worth saving.
 
 When you're done for the day, tell Claude you're wrapping up ("done", "that's it for today", "end session") or run:
 

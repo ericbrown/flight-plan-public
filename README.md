@@ -84,11 +84,15 @@ claude
 
 ### Every session
 
+**`/session-start` is the first thing you run and `/session-end` is the last — every time you touch a project with Flight Plan.** They're the bookends that make everything else work: `/session-start` loads the Memory Bank so the agent knows where things stand before it does anything, and `/session-end` writes back what changed so the next session starts warm instead of cold. Skip the start and the agent works blind; skip the end and the session's context, decisions, and lessons are lost.
+
 ```bash
-/session-start     # loads context, shows project state
+/session-start     # FIRST — loads context, shows project state, enters plan mode
 # ... do your work ...
-/session-end       # saves context, captures lessons, syncs integrations
+/session-end       # LAST — saves context, captures lessons, syncs integrations
 ```
+
+Everything between them — planning, execution, git, Linear — is optional depending on the task. The two bookends are not. Get in the habit of opening with `/session-start` and closing with `/session-end` on every session, even a five-minute one.
 
 ---
 
