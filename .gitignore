@@ -1,0 +1,32 @@
+# Machine-specific — don't commit these
+settings.local.json
+*.local.json
+
+# Secrets — NEVER commit. Real keys live in secrets.env (gitignored);
+# the committed secrets.env.example is just a template.
+secrets.env
+
+# Backups created by install.sh
+backups/
+
+# OS junk
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# Local audit logs (per-machine)
+.claude/audit/
+
+# Per-machine Memory Bank + project config (populated by /memory-init and use)
+.claude/memory/
+.claude/project-config.json
+
+# Dated research-log notes (keep the directory + its README, ignore daily files)
+research-log/*.md
+!research-log/README.md
+
+# Editor
+.vscode/
+.idea/
+*.swp

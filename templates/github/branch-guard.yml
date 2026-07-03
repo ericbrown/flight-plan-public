@@ -1,0 +1,24 @@
+name: branch-guard
+
+# Drop this into any project at .github/workflows/branch-guard.yml to enforce the
+# main ← dev ← feature branch model: all work lands on dev, and main only ever
+# merges dev. A PR to main from any branch other than dev fails here.
+#
+# Installed by Flight Plan's /branch-model command.
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PRs to main must come from dev
+        run: |
+          head="${{ github.head_ref }}"
+          if [ "$head" != "dev" ]; then
+            echo "::error::PR to main must come from 'dev' (got '$head'). All work lands on dev; main only ever merges dev. No release branches off main, no cherry-picks — they cause dev/main divergence."
+            exit 1
+          fi
+          echo "OK: head branch is 'dev'."

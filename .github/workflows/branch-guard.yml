@@ -1,0 +1,48 @@
+name: branch-guard
+
+# Enforces the one rule that keeps dev and main from diverging:
+# all work lands on dev, and main only ever merges dev.
+# A PR to main from any branch other than dev fails here.
+# The version-consistency job gates every release to main on a coherent version bump.
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PRs to main must come from dev
+        run: |
+          head="${{ github.head_ref }}"
+          if [ "$head" != "dev" ]; then
+            echo "::error::PR to main must come from 'dev' (got '$head'). All work lands on dev; main only ever merges dev. No release branches off main, no cherry-picks — they cause dev/main divergence."
+            exit 1
+          fi
+          echo "OK: head branch is 'dev'."
+
+  version-consistency:
+    # Every release to main bumps the version. It's stated in three places that must agree:
+    # the VERSION file, the README badge (**vX.Y.Z**), and the latest CHANGELOG entry.
+    # This catches a forgotten bump (most often the README badge) before it reaches main.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: VERSION, README badge, and CHANGELOG versions must match
+        run: |
+          version=$(tr -d '[:space:]' < VERSION)
+          readme=$(grep -oP '^\*\*v\K[0-9]+\.[0-9]+\.[0-9]+' README.md | head -1)
+          changelog=$(grep -oP '^## \[\K[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md | head -1)
+          echo "VERSION file   : $version"
+          echo "README badge   : $readme"
+          echo "CHANGELOG top  : $changelog"
+          if [ -z "$version" ] || [ -z "$readme" ] || [ -z "$changelog" ]; then
+            echo "::error::Could not parse a version from one of: VERSION, README.md (**vX.Y.Z** badge), CHANGELOG.md (## [X.Y.Z] header). Check the formats."
+            exit 1
+          fi
+          if [ "$version" != "$readme" ] || [ "$version" != "$changelog" ]; then
+            echo "::error::Version mismatch. VERSION=$version, README badge=$readme, CHANGELOG=$changelog. Every release bumps all three. Update the README badge and add a CHANGELOG entry to match VERSION."
+            exit 1
+          fi
+          echo "OK: all three report $version."
