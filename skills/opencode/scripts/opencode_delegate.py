@@ -53,7 +53,7 @@ PRIVATE_PROMPT_PATTERNS = (
     (r"\bsource\s+(csv|exports?)\b", "source_export_request"),
     (r"\b(users?|projects?|gpts?)\s+export\b", "workspace_usage_export"),
     (r"\bChatGPT Enterprise usage\b", "enterprise_usage_data"),
-    (r"\bPSB Bank\b", "client_identifier_psb_bank"),
+    (r"\bAcme Bank\b", "client_identifier_acme_bank"),
 )
 
 MODE_PREFACE = {

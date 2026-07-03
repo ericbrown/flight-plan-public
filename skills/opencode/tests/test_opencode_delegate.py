@@ -253,9 +253,9 @@ class OpenCodeDelegateTests(unittest.TestCase):
                 """,
             )
             private_prompt = (
-                "Review PSB Bank ChatGPT Enterprise usage from raw CSV exports at "
-                "/Users/example/Developer/ai-hub/Dot/projects/psb/source-material/2026-06/"
-                "PSB Bank users export (2026-05-01 - 2026-05-31).csv"
+                "Review Acme Bank ChatGPT Enterprise usage from raw CSV exports at "
+                "/Users/example/projects/acme/source-material/2026-06/"
+                "Acme Bank users export (2026-05-01 - 2026-05-31).csv"
             )
             result = run_wrapper(
                 [
