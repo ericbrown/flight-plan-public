@@ -10,6 +10,16 @@ Every release to `main` bumps the version in three places that must agree:
 
 ## [Unreleased]
 
+### Added
+- **`grok-build` delegate skill** — a fourth directory-based delegate skill that hands
+  fast, lightweight coding work off to the local Grok Build CLI (Composer 2.5,
+  `grok-composer-2.5-fast`). Rounds out the family alongside `codex` (GPT-5.5, depth) and
+  `opencode` (GLM-5.2, cheap/fast); reach for Grok when speed matters more than maximum
+  depth. Same wrapper contract as its siblings — `doctor`/`probe`/`audit-prompt`/`run`,
+  headless execution, prompt-file passing, the audit-prompt gate before any external
+  handoff, and secret redaction. Adapted from Jarad Johnson's cli-skills (MIT); see
+  `skills/ATTRIBUTION.md`.
+
 ## [0.3.0] - 2026-07-02
 
 ### Added

@@ -131,8 +131,9 @@ Skills activate based on context — no command needed:
 | `codex` | Delegate deep review, planning, or scoped edits to a local Codex CLI |
 | `claude-code` | Delegate bounded work to a local Claude Code CLI (reverse orchestration from another agent) |
 | `opencode` | Delegate cheap, fast work to a local OpenCode CLI |
+| `grok-build` | Delegate fast, lightweight coding work to a local Grok Build CLI (Composer 2.5) when speed matters more than depth |
 
-The last three are **directory skills** — each is a folder under `skills/` with a `SKILL.md`, an executable delegate script under `scripts/`, and `tests/`. They let one agent hand work off to another local CLI. These plus the `harden` primitive are adapted from Jarad Johnson's [cli-skills](https://github.com/Jdjohnson/skills) (MIT) — see [`skills/ATTRIBUTION.md`](skills/ATTRIBUTION.md) for the exact adaptations and the upstream license.
+The last four are **directory skills** — each is a folder under `skills/` with a `SKILL.md`, an executable delegate script under `scripts/`, and `tests/`. They let one agent hand work off to another local CLI. These plus the `harden` primitive are adapted from Jarad Johnson's [cli-skills](https://github.com/Jdjohnson/skills) (MIT) — see [`skills/ATTRIBUTION.md`](skills/ATTRIBUTION.md) for the exact adaptations and the upstream license.
 
 ### Planning pipeline
 
