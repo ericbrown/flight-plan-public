@@ -439,8 +439,13 @@ def build_codex_argv(
         "--json",
         "--output-last-message",
         last_message_path,
-        prompt,
     ]
+    # Opt-in live web search: codex's native server-side `web_search` tool.
+    # Runs server-side, so it works even under the read-only/workspace-write
+    # sandbox. Off by default — enable only for research runs, not code review.
+    if getattr(args, "search", False):
+        argv.append("--search")
+    argv.append(prompt)
     return argv
 
 
@@ -677,6 +682,7 @@ def add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--timeout", type=int, default=1200, help="Subprocess timeout in seconds.")
     parser.add_argument("--model", default=DEFAULT_CODEX_MODEL)
     parser.add_argument("--effort", choices=EFFORTS, default=DEFAULT_CODEX_EFFORT, help="Reasoning effort for the run.")
+    parser.add_argument("--search", action="store_true", help="Enable codex live web search (native server-side web_search tool). Use for research runs; leave off for code review.")
 
 
 def add_prompt_args(parser: argparse.ArgumentParser) -> None:

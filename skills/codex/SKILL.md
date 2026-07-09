@@ -62,6 +62,20 @@ All modes run headless with `approval_policy=never`; the OS-level sandbox is the
 - `high` (default): most delegated reviews, plans, and edits.
 - `xhigh`: the hardest reviews, architecture plans, and high-stakes analysis. Slowest.
 
+## Web Search
+
+Codex has a native, server-side `web_search` tool that is **off by default**. Pass `--search` on a `run` to enable live web search for that delegation:
+
+```bash
+python3 ~/.claude/skills/codex/scripts/codex_delegate.py run \
+  --cwd /path/to/project \
+  --mode plan \
+  --search \
+  --prompt-file /path/to/prompt.md
+```
+
+Because the tool runs server-side, it works even under the `read-only` and `workspace-write` sandboxes. Enable it for research or planning that needs current external information (new APIs, library docs, recent developments). Leave it off for code review and pure coding, where it adds latency without value.
+
 ## Safety Rules
 
 - Always pass prompts through `--prompt-file`, `--prompt`, or `--stdin`; never build a shell command by concatenating prompt text.

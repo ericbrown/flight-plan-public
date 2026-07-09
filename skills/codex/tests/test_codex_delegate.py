@@ -151,6 +151,36 @@ class CodexDelegateTests(unittest.TestCase):
             self.assertNotIn("Review this safely", result.stdout)
             prompt_text = Path(payload["artifacts"]["prompt_file"]).read_text(encoding="utf-8")
             self.assertIn("do not write, edit, delete", prompt_text)
+            # search is opt-in: absent unless --search is passed
+            self.assertNotIn("--search", argv)
+
+    def test_search_flag_injects_web_search_and_keeps_prompt_last(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fake = make_fake_codex(root, FAKE_PREAMBLE + "raise SystemExit(42)\n")
+            result = run_wrapper(
+                [
+                    "run",
+                    "--codex-bin",
+                    str(fake),
+                    "--cwd",
+                    str(root),
+                    "--prompt",
+                    "Research the latest API",
+                    "--search",
+                    "--run-id",
+                    "dry-run",
+                    "--dry-run",
+                ]
+            )
+            payload = json.loads(result.stdout)
+            argv = payload["command"]["argv"]
+
+            self.assertEqual(result.returncode, 0)
+            self.assertIn("--search", argv)
+            # prompt must remain the final positional argument for codex exec
+            self.assertTrue(argv[-1].startswith("<prompt:"))
+            self.assertLess(argv.index("--search"), len(argv) - 1)
 
     def test_edit_dry_run_uses_workspace_write_and_edit_preface(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
