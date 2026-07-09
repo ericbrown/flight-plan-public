@@ -76,6 +76,8 @@ python3 ~/.claude/skills/codex/scripts/codex_delegate.py run \
 
 Because the tool runs server-side, it works even under the `read-only` and `workspace-write` sandboxes. Enable it for research or planning that needs current external information (new APIs, library docs, recent developments). Leave it off for code review and pure coding, where it adds latency without value.
 
+Under the hood the wrapper enables this by passing `-c tools.web_search=true` to `codex exec`. (The top-level `codex --search` flag is a TUI flag that `codex exec` rejects; the config override is the exec-equivalent.) You never pass the override yourself — `--search` is the only knob.
+
 ## Safety Rules
 
 - Always pass prompts through `--prompt-file`, `--prompt`, or `--stdin`; never build a shell command by concatenating prompt text.
