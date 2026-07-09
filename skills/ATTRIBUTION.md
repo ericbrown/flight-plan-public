@@ -1,7 +1,8 @@
 # Attribution
 
-The three delegate skills bundled here — `codex/`, `claude-code/`, and `opencode/` — plus
-the `harden` command/skill are adapted from Jarad Johnson's **cli-skills** project:
+The four delegate skills bundled here — `codex/`, `claude-code/`, `opencode/`, and
+`grok-build/` — plus the `harden` command/skill are adapted from Jarad Johnson's
+**cli-skills** project:
 
 - Upstream: https://github.com/Jdjohnson/skills
 - License: MIT
@@ -19,7 +20,9 @@ this repo:
   same as `/Users` so a delegated agent cannot be pointed at `/home` as its working
   directory on Linux. CLI binary discovery also adds the common Linux locations
   (`/usr/local/bin`, `/usr/bin`, `~/.local/bin`) alongside the Homebrew path. The macOS
-  behavior is preserved so the skills still work if run on a Mac.
+  behavior is preserved so the skills still work if run on a Mac. `grok-build` additionally
+  drops the upstream author's hardcoded `/Users/<author>/.grok/bin/grok` default candidate
+  in favor of the generic `~/.grok/bin/grok` plus the Linux locations.
 - **Invocation-path rewrite.** Every `SKILL.md` invocation example was rewritten from the
   upstream `.dot-skills/<name>/scripts/...` layout to
   `~/.claude/skills/<name>/scripts/...`, which is where flight-plan's installer places
