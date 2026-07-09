@@ -74,6 +74,9 @@ done
 for d in "$SCRIPT_DIR/skills/"*/; do
   [ -d "$d" ] || continue
   name=$(basename "$d")
+  # Clear any prior install first. `cp -r src/ dest` nests to dest/name/name
+  # when dest already exists, so a re-install would double the path.
+  rm -rf "$CLAUDE_DIR/skills/$name"
   cp -r "$d" "$CLAUDE_DIR/skills/$name"
   for py in "$CLAUDE_DIR/skills/$name/scripts/"*.py; do
     [ -f "$py" ] && chmod +x "$py"
