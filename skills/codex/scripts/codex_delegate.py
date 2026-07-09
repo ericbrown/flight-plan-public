@@ -440,11 +440,14 @@ def build_codex_argv(
         "--output-last-message",
         last_message_path,
     ]
-    # Opt-in live web search: codex's native server-side `web_search` tool.
-    # Runs server-side, so it works even under the read-only/workspace-write
-    # sandbox. Off by default — enable only for research runs, not code review.
+    # Opt-in live web search: enable codex's native server-side `web_search`
+    # tool via config override. (`codex exec` has no top-level `--search`
+    # flag; that lives on the interactive `codex` command. The exec-equivalent
+    # is the `tools.web_search` config key.) Runs server-side, so it works even
+    # under the read-only/workspace-write sandbox. Off by default — enable only
+    # for research runs, not code review.
     if getattr(args, "search", False):
-        argv.append("--search")
+        argv.extend(["-c", "tools.web_search=true"])
     argv.append(prompt)
     return argv
 

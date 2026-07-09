@@ -151,7 +151,9 @@ class CodexDelegateTests(unittest.TestCase):
             self.assertNotIn("Review this safely", result.stdout)
             prompt_text = Path(payload["artifacts"]["prompt_file"]).read_text(encoding="utf-8")
             self.assertIn("do not write, edit, delete", prompt_text)
-            # search is opt-in: absent unless --search is passed
+            # search is opt-in: the web_search config override is absent
+            # unless --search is passed
+            self.assertNotIn("tools.web_search=true", argv)
             self.assertNotIn("--search", argv)
 
     def test_search_flag_injects_web_search_and_keeps_prompt_last(self) -> None:
@@ -177,10 +179,14 @@ class CodexDelegateTests(unittest.TestCase):
             argv = payload["command"]["argv"]
 
             self.assertEqual(result.returncode, 0)
-            self.assertIn("--search", argv)
+            # --search maps to the codex exec config override, not a top-level
+            # --search flag (which codex exec rejects as unsupported)
+            self.assertNotIn("--search", argv)
+            self.assertIn("tools.web_search=true", argv)
+            self.assertEqual(argv[argv.index("tools.web_search=true") - 1], "-c")
             # prompt must remain the final positional argument for codex exec
             self.assertTrue(argv[-1].startswith("<prompt:"))
-            self.assertLess(argv.index("--search"), len(argv) - 1)
+            self.assertLess(argv.index("tools.web_search=true"), len(argv) - 1)
 
     def test_edit_dry_run_uses_workspace_write_and_edit_preface(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
