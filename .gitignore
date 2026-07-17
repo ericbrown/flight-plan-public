@@ -22,6 +22,9 @@ __pycache__/
 .claude/memory/
 .claude/project-config.json
 
+# Learning Loop corrections store (local accumulating state)
+.claude/cognition.db
+
 # Dated research-log notes (keep the directory + its README, ignore daily files)
 research-log/*.md
 !research-log/README.md
